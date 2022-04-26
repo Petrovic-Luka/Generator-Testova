@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32126.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorTestova", "GeneratorTestova\GeneratorTestova.csproj", "{7C73E781-177B-4AB0-8FD5-66DBD93F9962}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorPitanjaLibrary", "GeneratorPitanjaLibrary\GeneratorPitanjaLibrary.csproj", "{55C0A948-C8A5-4358-BCCC-37F57839CB5B}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Instalacija", "Instalacija\Instalacija.vdproj", "{CC12591B-864F-4FEA-82E4-A5B04F39CA7D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C73E781-177B-4AB0-8FD5-66DBD93F9962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C73E781-177B-4AB0-8FD5-66DBD93F9962}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C73E781-177B-4AB0-8FD5-66DBD93F9962}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C73E781-177B-4AB0-8FD5-66DBD93F9962}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55C0A948-C8A5-4358-BCCC-37F57839CB5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55C0A948-C8A5-4358-BCCC-37F57839CB5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55C0A948-C8A5-4358-BCCC-37F57839CB5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55C0A948-C8A5-4358-BCCC-37F57839CB5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC12591B-864F-4FEA-82E4-A5B04F39CA7D}.Debug|Any CPU.ActiveCfg = Debug
+		{CC12591B-864F-4FEA-82E4-A5B04F39CA7D}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CC5CA1BB-F394-4023-AFBA-2B857E44A296}
+	EndGlobalSection
+EndGlobal
