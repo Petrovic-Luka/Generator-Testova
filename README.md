@@ -32,4 +32,4 @@ Aplikacija omogućava import i export pitanja na osnovu kojih se generišu testo
  Odgovor4|  
 
 ## Link za instalaciju 
-https://drive.google.com/drive/folders/1d9-be6Q8OLWDPsA0_TCS5wFxwQiOENHS?usp=sharing
+https://drive.google.com/drive/folders/17h_gHF3I6RsQIe2lASJFwEySG7Cd0_SQ?usp=sharing
