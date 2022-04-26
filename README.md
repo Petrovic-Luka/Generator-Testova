@@ -30,3 +30,6 @@ Aplikacija omogućava import i export pitanja na osnovu kojih se generišu testo
  Pitanje2|Odgovor2|Pitanje3|Odgovor3|  
  Pitanje4|  
  Odgovor4|  
+
+##Link za instalaciju 
+https://drive.google.com/drive/folders/1d9-be6Q8OLWDPsA0_TCS5wFxwQiOENHS?usp=sharing
