@@ -39,6 +39,7 @@ namespace GeneratorTestova
             this.FileDialogOtvori = new System.Windows.Forms.OpenFileDialog();
             this.saveFileIzvuci = new System.Windows.Forms.SaveFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.btnObrisiPredmet = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cmbPredmet
@@ -112,12 +113,24 @@ namespace GeneratorTestova
             // 
             this.saveFileIzvuci.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*";
             // 
+            // btnObrisiPredmet
+            // 
+            this.btnObrisiPredmet.Location = new System.Drawing.Point(396, 150);
+            this.btnObrisiPredmet.Name = "btnObrisiPredmet";
+            this.btnObrisiPredmet.Size = new System.Drawing.Size(119, 75);
+            this.btnObrisiPredmet.TabIndex = 6;
+            this.btnObrisiPredmet.Text = "Obrisi predmet";
+            this.btnObrisiPredmet.UseVisualStyleBackColor = true;
+            this.btnObrisiPredmet.Click += new System.EventHandler(this.btnObrisiPredmet_Click);
+            this.btnObrisiPredmet.MouseHover += new System.EventHandler(this.btnObrisiPredmet_MouseHover);
+            // 
             // FrmAzurirajPitanja
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 33F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(502, 481);
+            this.ClientSize = new System.Drawing.Size(550, 479);
+            this.Controls.Add(this.btnObrisiPredmet);
             this.Controls.Add(this.checkBoxCeo);
             this.Controls.Add(this.btnObris);
             this.Controls.Add(this.btnIzvuci);
@@ -145,5 +158,6 @@ namespace GeneratorTestova
         private System.Windows.Forms.OpenFileDialog FileDialogOtvori;
         private System.Windows.Forms.SaveFileDialog saveFileIzvuci;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button btnObrisiPredmet;
     }
 }

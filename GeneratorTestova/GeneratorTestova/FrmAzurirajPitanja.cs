@@ -152,5 +152,37 @@ namespace GeneratorTestova
         {
             toolTip1.Show("Trajno brise pitanja za odabranu oblast/predmet", btnObris);
         }
+
+        private void btnObrisiPredmet_Click(object sender, EventArgs e)
+        {
+            Predmet p = (Predmet)cmbPredmet.SelectedItem;
+            if (p == null)
+            {
+               MessageBox.Show("Nije odabran ni jedan predmet", "Greska", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            DialogResult dialogResult = MessageBox.Show("Da li zelite da obrisete Predmet", "Upozorenje", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+                try
+                {
+                    Funkcije.ObrisiPredmet(p.ID);
+                    cmbPredmet.DataSource = Funkcije.GetPredmet_All();
+                    cmbPredmet.DisplayMember = "Naziv";
+                    Predmet pom = (Predmet)cmbPredmet.SelectedItem;
+                    cmbOblast.DataSource = Funkcije.GetOblast(pom.ID);
+                    cmbOblast.DisplayMember = "Naziv";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void btnObrisiPredmet_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.Show("Trajno brise predmet kao i sve oblasti i pitanja vezane za njega", btnObris);
+        }
     }
 }

@@ -91,12 +91,12 @@ namespace GeneratorTestova
             }
             if (checkBoxSveOblasti.Checked)
             {
-                FrmPitanja frm = new FrmPitanja(IdPredmeta, new List<int>());
+                FrmPitanja frm = new FrmPitanja(IdPredmeta, new List<Oblast>());
                 frm.ShowDialog();
             }
             else
             {
-                List<int> proba = odabrani.IzvuciIdListu();
+                List<Oblast> proba = odabrani;
                 FrmPitanja frm = new FrmPitanja(IdPredmeta, proba);
                 frm.ShowDialog();
             }

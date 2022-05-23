@@ -70,6 +70,7 @@ namespace GeneratorTestova
         {
             FrmAzurirajPitanja frm = new FrmAzurirajPitanja();
             frm.ShowDialog();
+            PopuniListuPredmeta();
         }
     }
 }

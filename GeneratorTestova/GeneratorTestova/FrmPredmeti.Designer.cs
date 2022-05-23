@@ -49,9 +49,9 @@ namespace GeneratorTestova
             // 
             this.cmbPredmeti.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbPredmeti.FormattingEnabled = true;
-            this.cmbPredmeti.Location = new System.Drawing.Point(42, 100);
+            this.cmbPredmeti.Location = new System.Drawing.Point(12, 100);
             this.cmbPredmeti.Name = "cmbPredmeti";
-            this.cmbPredmeti.Size = new System.Drawing.Size(182, 41);
+            this.cmbPredmeti.Size = new System.Drawing.Size(225, 41);
             this.cmbPredmeti.TabIndex = 1;
             // 
             // btnIzaberi

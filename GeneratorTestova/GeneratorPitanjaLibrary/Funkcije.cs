@@ -69,21 +69,6 @@ namespace GeneratorPitanjaLibrary
         }
 
         /// <summary>
-        /// od liste Oblasti izlaci samo njihove id vrednosti i prosledjuje ih
-        /// </summary>
-        /// <param name="lista"></param>
-        /// <returns></returns>
-        public static List<int> IzvuciIdListu(this List<Oblast> lista)
-        {
-            List<int> output = new List<int>();
-            foreach (Oblast o in lista)
-            {
-                output.Add(o.ID);
-            }
-            return output;
-        }
-
-        /// <summary>
         ///vraca listu random odabranih pitanja od dostupnih
         /// </summary>
         /// <param name="brPitanja"></param>
@@ -116,7 +101,7 @@ namespace GeneratorPitanjaLibrary
         /// <param name="IdPredmeta"></param>
         /// <param name="oblasti"></param>
         /// <returns></returns>
-        public static List<Pitanje> OdaberiPitanjaZaTest(int IdPredmeta, List<int> oblasti)
+        public static List<Pitanje> OdaberiPitanjaZaTest(int IdPredmeta, List<Oblast> oblasti)
         {
             if (oblasti == null)
             {
@@ -143,7 +128,7 @@ namespace GeneratorPitanjaLibrary
                 //ako ima samo jedna oblast gleda samo tu oblast
                 if (oblasti.Count == 1)
                 {
-                    dostupnaPitanja = connection.Query<Pitanje>("Select * from pitanja where IdOblasti=" + oblasti[0]).ToList();
+                    dostupnaPitanja = connection.Query<Pitanje>("Select * from pitanja where IdOblasti=" + oblasti[0].ID).ToList();
                     if (ukupanBrPitanja > dostupnaPitanja.Count)
                     {
                         return dostupnaPitanja;
@@ -153,24 +138,31 @@ namespace GeneratorPitanjaLibrary
                 }
                 int brojPitanjaPoOblasti;
                 List<Pitanje> pomocna;
+                string upit = "SELECT * FROM pitanja WHERE IdOblasti IN (";
+                foreach (var i in oblasti)
+                {
+                    upit = upit + i.ID + ",";
+                }
+                upit=upit.Substring(0, upit.Length - 1);
+                upit += ")";
+                dostupnaPitanja = connection.Query<Pitanje>(upit).ToList();
                 //ako je broj pitanja po oblasti jednak
                 if (ukupanBrPitanja % oblasti.Count == 0 && ukupanBrPitanja / 2 >= oblasti.Count)
                 {
                     brojPitanjaPoOblasti = ukupanBrPitanja / oblasti.Count;
-                    foreach (int i in oblasti)
+                    //ako je br pitanja manji od zadatog vraca onoliko pitanja koliko ih ima
+                    foreach (var i in oblasti)
                     {
-                        dostupnaPitanja = connection.Query<Pitanje>("Select * from pitanja where IdOblasti=" + i).ToList();
-                        //ako je br pitanja manji od zadatog vraca onoliko pitanja koliko ih ima
-                        if (brojPitanjaPoOblasti > dostupnaPitanja.Count)
+                        if (brojPitanjaPoOblasti > dostupnaPitanja.Where(x => x.ID == i.ID).Count())
                         {
-                            foreach (Pitanje p in dostupnaPitanja)
+                            foreach (Pitanje p in dostupnaPitanja.Where(x => x.IdOblasti == i.ID).ToList())
                             {
                                 output.Add(p);
                             }
                         }
                         else
                         {
-                            pomocna = OdaberiRandomPitanja(brojPitanjaPoOblasti, dostupnaPitanja);
+                            pomocna = OdaberiRandomPitanja(brojPitanjaPoOblasti, dostupnaPitanja.Where(x => x.IdOblasti == i.ID).ToList());
                             foreach (Pitanje p in pomocna)
                             {
                                 output.Add(p);
@@ -186,29 +178,28 @@ namespace GeneratorPitanjaLibrary
                     //ako je npr 20 pitanja i 3 oblasti 20/3=6 a 20-6*3=2 sto znaci da 2 oblasti imaju po 7 pitanja a preostala 6
                     // ako je 20/11 sledi 20/11=1 a 20-11*1=9 sto znaci 9 oblasti ima po 2 pitanja a ostale 1
                     int dodatak = ukupanBrPitanja - brojPitanjaPoOblasti * oblasti.Count;
-                    foreach (int i in oblasti)
+                    foreach (var i in oblasti)
                     {
-                        dostupnaPitanja = connection.Query<Pitanje>("Select * from pitanja where IdOblasti=" + i).ToList();
                         if (dodatak > 0)
                         {
-                            if (brojPitanjaPoOblasti + 1 > dostupnaPitanja.Count)
+                            if (brojPitanjaPoOblasti + 1 > dostupnaPitanja.Where(x=>x.IdOblasti==i.ID).Count())
                             {
                                 pomocna = dostupnaPitanja;
                                 dodatak--;
                             }
                             else
                             {
-                                pomocna = OdaberiRandomPitanja(brojPitanjaPoOblasti + 1, dostupnaPitanja);
+                                pomocna = OdaberiRandomPitanja(brojPitanjaPoOblasti + 1, dostupnaPitanja.Where(x => x.IdOblasti == i.ID).ToList());
                                 dodatak--;
                             }
                         }
                         else
                         {
-                            if (ukupanBrPitanja > dostupnaPitanja.Count)
+                            if (ukupanBrPitanja > dostupnaPitanja.Where(x => x.IdOblasti == i.ID).Count())
                             {
                                 pomocna = dostupnaPitanja;
                             }
-                            else pomocna = OdaberiRandomPitanja(brojPitanjaPoOblasti, dostupnaPitanja);
+                            else pomocna = OdaberiRandomPitanja(brojPitanjaPoOblasti, dostupnaPitanja.Where(x => x.IdOblasti == i.ID).ToList());
                         }
                         foreach (Pitanje p in pomocna)
                         {
@@ -326,6 +317,7 @@ namespace GeneratorPitanjaLibrary
         /// <param name="IdPredmeta"></param>
         public static void ExportujPitanja(string putanja, int IdPredmeta)
         {
+            //TODO proveri da li treba string builder ili moze odma da se pise u fajl
             using (IDbConnection connection = new System.Data.OleDb.OleDbConnection(CnnString(dbName)))
             {
                 List<Pitanje> pitanja = connection.Query<Pitanje>("Select * from pitanja where IdPredmeta=" + IdPredmeta).ToList();
@@ -364,6 +356,33 @@ namespace GeneratorPitanjaLibrary
             {
                 connection.Open();
                 string s = "DELETE FROM pitanja Where IdPredmeta=" + IdPredmeta;
+                OleDbCommand command = new OleDbCommand(s, (OleDbConnection)connection);
+                command.ExecuteNonQuery();
+            }
+        }
+        /// <summary>
+        /// Obrisi sve oblasti za zadati predmet
+        /// </summary>
+        /// <param name="IdPredmeta"></param>
+        public static void ObrisiOblasti(int IdPredmeta)
+        {
+            using (IDbConnection connection = new System.Data.OleDb.OleDbConnection(CnnString(dbName)))
+            {
+                connection.Open();
+                string s = "DELETE FROM Oblasti Where IdPredmeta=" + IdPredmeta;
+                OleDbCommand command = new OleDbCommand(s, (OleDbConnection)connection);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void ObrisiPredmet(int IdPredmeta)
+        {
+            ObrisiPitanja(IdPredmeta);
+            ObrisiOblasti(IdPredmeta);
+            using (IDbConnection connection = new System.Data.OleDb.OleDbConnection(CnnString(dbName)))
+            {
+                connection.Open();
+                string s = "DELETE FROM Predmeti Where Id=" + IdPredmeta;
                 OleDbCommand command = new OleDbCommand(s, (OleDbConnection)connection);
                 command.ExecuteNonQuery();
             }

@@ -20,7 +20,7 @@ namespace GeneratorTestova
         /// <summary>
         /// Lista oblasti za koju se uzimaju pitanja ako je test iz cele oblasti lista je null
         /// </summary>
-        List<int> oblastiId;
+        List<Oblast> oblasti;
 
         /// <summary>
         /// Lista pitanja koja ce biti na testu
@@ -32,13 +32,13 @@ namespace GeneratorTestova
         /// </summary>
         public List<Label> odgovori = new List<Label>();
 
-        public FrmPitanja(int IdPredmet,List<int> oblasti)
+        public FrmPitanja(int IdPredmet,List<Oblast> zadate)
         {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;
             idPredmeta = IdPredmet;
-            oblastiId = oblasti;
-            pitanja = Funkcije.OdaberiPitanjaZaTest(idPredmeta, oblastiId);           
+            oblasti = zadate;
+            pitanja = Funkcije.OdaberiPitanjaZaTest(idPredmeta, oblasti);           
             pitanja.Reverse();
             GenerisiKomponente();
             //TODO popravi formatiranje pitaja
