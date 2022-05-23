@@ -374,7 +374,10 @@ namespace GeneratorPitanjaLibrary
                 command.ExecuteNonQuery();
             }
         }
-
+        /// <summary>
+        /// Funkcija brise predmet kao i sva pitanja i oblasti vezane za njega
+        /// </summary>
+        /// <param name="IdPredmeta"></param>
         public static void ObrisiPredmet(int IdPredmeta)
         {
             ObrisiPitanja(IdPredmeta);
