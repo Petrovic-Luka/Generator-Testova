@@ -28,7 +28,6 @@ namespace GeneratorTestova
 
         private void FrmPredmeti_Load(object sender, EventArgs e)
         {
-            //TODO dodaj mogucnost da se obrise predmet
             PopuniListuPredmeta();
         }
 

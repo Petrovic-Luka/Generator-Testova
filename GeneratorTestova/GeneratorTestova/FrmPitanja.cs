@@ -16,21 +16,21 @@ namespace GeneratorTestova
         /// <summary>
         /// Id predmeta za koji se uzimaju pitanja
         /// </summary>
-        int idPredmeta;
+        readonly int idPredmeta;
         /// <summary>
         /// Lista oblasti za koju se uzimaju pitanja ako je test iz cele oblasti lista je null
         /// </summary>
-        List<Oblast> oblasti;
+        readonly List<Oblast> oblasti;
 
         /// <summary>
         /// Lista pitanja koja ce biti na testu
         /// </summary>
-        List<Pitanje> pitanja;
+        readonly List<Pitanje> pitanja;
 
         /// <summary>
         /// Lista labela koje sadrze odgovore
         /// </summary>
-        public List<Label> odgovori = new List<Label>();
+        public readonly List<Label> odgovori = new List<Label>();
 
         public FrmPitanja(int IdPredmet,List<Oblast> zadate)
         {
@@ -41,8 +41,6 @@ namespace GeneratorTestova
             pitanja = Funkcije.OdaberiPitanjaZaTest(idPredmeta, oblasti);           
             pitanja.Reverse();
             GenerisiKomponente();
-            //TODO popravi formatiranje pitaja
-            //dodaj numeraciju pitanja i tekst da je odgovor
         }
 
         /// <summary>
@@ -51,26 +49,40 @@ namespace GeneratorTestova
         private void GenerisiKomponente()
         {
             int brojac = 100;
+            if(pitanja.Count == 0)
+            {
+                Label tekst = new System.Windows.Forms.Label
+                {
+                    Text = "Nema dostupnih pitanja",
+                    Location = new Point(50, brojac),
+                    AutoSize = true
+                };
+                this.Controls.Add(tekst);
+                return;
+            }
             foreach (Pitanje p in pitanja)
             {
-                Label tekst = new System.Windows.Forms.Label();
+                Label tekst = new System.Windows.Forms.Label
+                {   Location = new Point(50, brojac),
+                    AutoSize = true,
+                    Font = new Font(FontFamily.GenericSerif, 24, FontStyle.Bold)
+                };
                 if (p.Tekst.Length > 130)
                 {
                     tekst.Text = NamestiString(p.Odgovor);
                 }
                 else tekst.Text = p.Tekst;
-                tekst.Location = new Point(50, brojac);
-                tekst.AutoSize = true;
-                tekst.Font = new Font(FontFamily.GenericSerif, 24, FontStyle.Bold);
-                 Label odgovor = new System.Windows.Forms.Label();
-                if(p.Odgovor.Length> 130)
+                Label odgovor = new System.Windows.Forms.Label()
+                {  Location = new Point(65, brojac + 50 + p.Tekst.Length / 2),
+                   AutoSize = true,
+                   Visible = false
+                };
+
+                if (p.Odgovor.Length> 130)
                 {
                   odgovor.Text = NamestiString(p.Odgovor);
                 }
                 else odgovor.Text = p.Odgovor;
-                odgovor.Location = new Point(65, brojac +50+ p.Tekst.Length/2);
-                odgovor.AutoSize = true;
-                odgovor.Visible = false;
                 this.Controls.Add(odgovor);
                 odgovori.Add(odgovor);
                 this.Controls.Add(tekst);

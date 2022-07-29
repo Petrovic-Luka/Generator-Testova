@@ -95,7 +95,7 @@ namespace GeneratorPitanjaLibrary
         }
 
         /// <summary>
-        /// Prima id predmeta id Listu intigera koja predstavlja id vrednosti oblasti tog predmeta
+        /// Prima id predmeta i Listu oblasti i nasumicno odabira pitanja za test
         /// ako je lista prazna vraca pitanja za ceo predmet
         /// </summary>
         /// <param name="IdPredmeta"></param>
@@ -220,8 +220,9 @@ namespace GeneratorPitanjaLibrary
             using (IDbConnection connection = new System.Data.OleDb.OleDbConnection(CnnString(dbName)))
             {
                 connection.Open();
-                string s = "INSERT INTO predmeti(Naziv)Values(\"" + naziv + "\")";
+                string s = "INSERT INTO predmeti(Naziv)Values(@Naziv)";
                 OleDbCommand command = new OleDbCommand(s, (OleDbConnection)connection);
+                command.Parameters.AddWithValue("@Naziv", naziv);
                 command.ExecuteNonQuery();
             }
         }
@@ -236,9 +237,12 @@ namespace GeneratorPitanjaLibrary
             using (IDbConnection connection = new System.Data.OleDb.OleDbConnection(CnnString(dbName)))
             {
                 connection.Open();
-                string s = "INSERT INTO oblasti(Naziv,IdPredmeta)Values(\"" + naziv + "\","+IdPredmeta+")";
+                string s = "INSERT INTO oblasti(Naziv,IdPredmeta)Values(@Naziv,@IdPredmeta)";
                 OleDbCommand command = new OleDbCommand(s, (OleDbConnection)connection);
+                command.Parameters.AddWithValue("@Naziv", naziv);
+                command.Parameters.AddWithValue("@IdPredmeta",IdPredmeta);
                 command.ExecuteNonQuery();
+                command.Dispose();
             }
         }
         /// <summary>
@@ -260,12 +264,19 @@ namespace GeneratorPitanjaLibrary
             using (IDbConnection connection = new System.Data.OleDb.OleDbConnection(CnnString(dbName)))
             {
                 connection.Open();
+                string s = "INSERT INTO pitanja(Tekst,Odgovor,IdOblasti,IdPredmeta)Values(@Tekst,@Odgovor,@IdOblasti,@IdPredmeta)";
+                //{ podeljeno[i]}\",\"{podeljeno[i+1]}\",{IdOblasti},{IdPredmeta}
+                OleDbCommand command = new OleDbCommand(s, (OleDbConnection)connection);
                 for (int i = 0; i < podeljeno.Count-2; i = i + 2)
                 {
-                    string s = $"INSERT INTO pitanja(Tekst,Odgovor,IdOblasti,IdPredmeta)Values(\"{podeljeno[i]}\",\"{podeljeno[i+1]}\",{IdOblasti},{IdPredmeta})";
-                    OleDbCommand command = new OleDbCommand(s, (OleDbConnection)connection);
+                    command.Parameters.AddWithValue("@Tekst", podeljeno[i]);
+                    command.Parameters.AddWithValue("@Odgovor", podeljeno[i+1]);
+                    command.Parameters.AddWithValue("@IdOblasti", IdOblasti);
+                    command.Parameters.AddWithValue("@IdPredmeta", IdPredmeta);
                     command.ExecuteNonQuery();
+                    command.Parameters.Clear();
                 }
+                command.Dispose();
             }
         }
         /// <summary>
@@ -285,12 +296,18 @@ namespace GeneratorPitanjaLibrary
             using (IDbConnection connection = new System.Data.OleDb.OleDbConnection(CnnString(dbName)))
             {
                 connection.Open();
+                string s = "INSERT INTO pitanja(Tekst,Odgovor,IdPredmeta)Values(@Tekst,@Odgovor,@IdPredmeta)";
+                OleDbCommand command = new OleDbCommand(s, (OleDbConnection)connection);
                 for (int i = 0; i < podeljeno.Count - 2; i = i + 2)
                 {
-                    string s = $"INSERT INTO pitanja(Tekst,Odgovor,IdPredmeta)Values(\"{podeljeno[i]}\",\"{podeljeno[i + 1]}\",{IdPredmeta})";
-                    OleDbCommand command = new OleDbCommand(s, (OleDbConnection)connection);
+                    //\"{podeljeno[i]}\",\"{podeljeno[i + 1]}\",{IdPredmeta}
+                    command.Parameters.AddWithValue("@Tekst", podeljeno[i]);
+                    command.Parameters.AddWithValue("@Odgovor", podeljeno[i+1]);
+                    command.Parameters.AddWithValue("@IdPredmeta", IdPredmeta);
                     command.ExecuteNonQuery();
+                    command.Parameters.Clear();
                 }
+                command.Dispose();
             }
         }
 
@@ -317,7 +334,6 @@ namespace GeneratorPitanjaLibrary
         /// <param name="IdPredmeta"></param>
         public static void ExportujPitanja(string putanja, int IdPredmeta)
         {
-            //TODO proveri da li treba string builder ili moze odma da se pise u fajl
             using (IDbConnection connection = new System.Data.OleDb.OleDbConnection(CnnString(dbName)))
             {
                 List<Pitanje> pitanja = connection.Query<Pitanje>("Select * from pitanja where IdPredmeta=" + IdPredmeta).ToList();
@@ -355,9 +371,11 @@ namespace GeneratorPitanjaLibrary
             using (IDbConnection connection = new System.Data.OleDb.OleDbConnection(CnnString(dbName)))
             {
                 connection.Open();
-                string s = "DELETE FROM pitanja Where IdPredmeta=" + IdPredmeta;
+                string s = "DELETE FROM pitanja Where IdPredmeta=@IdPredmeta";
                 OleDbCommand command = new OleDbCommand(s, (OleDbConnection)connection);
+                command.Parameters.AddWithValue("@IdPredmeta", IdPredmeta);
                 command.ExecuteNonQuery();
+                command.Dispose();
             }
         }
         /// <summary>
@@ -372,6 +390,7 @@ namespace GeneratorPitanjaLibrary
                 string s = "DELETE FROM Oblasti Where IdPredmeta=" + IdPredmeta;
                 OleDbCommand command = new OleDbCommand(s, (OleDbConnection)connection);
                 command.ExecuteNonQuery();
+                command.Dispose();
             }
         }
         /// <summary>

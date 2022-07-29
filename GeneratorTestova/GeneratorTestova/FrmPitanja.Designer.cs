@@ -36,7 +36,7 @@ namespace GeneratorTestova
             // 
             // btnPrikazi
             // 
-            this.btnPrikazi.Location = new System.Drawing.Point(758, 12);
+            this.btnPrikazi.Location = new System.Drawing.Point(746, 29);
             this.btnPrikazi.Name = "btnPrikazi";
             this.btnPrikazi.Size = new System.Drawing.Size(232, 66);
             this.btnPrikazi.TabIndex = 0;
